@@ -1,0 +1,35 @@
+server:
+  port: '8083'
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+              
+     
+  
+      routes[2]:
+        uri: lb://LOGIN-SERVICE
+        id: LOGIN-SERVICE
+        predicates[0]: Path=/login/**
+      routes[0]:
+        id: CITIZEN-SERVICE
+        uri: lb://CITIZEN-SERVICE
+        predicates[0]: Path=/citizen/**
+      routes[1]:
+        uri: lb://VACCINATIONCENTER-SERVICE
+        id: VACCINATIONCENTER-SERVICE
+        predicates[0]: Path=/vaccinationcenter/**
+              
+  spring:
+  main:    web-application-type: reactive
+  
